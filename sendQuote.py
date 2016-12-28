@@ -11,11 +11,13 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
-def show_all_quotes():
-    col = 1
-    print wks.col_values(col)
-    #Need to parse the output before printing 
+def show_all_quotes(wks):
+    quotes = wks.get_all_values()
+    for entry in quotes:
+        print entry[0]
 
+def update_email(email_cell, email):
+    print("")
 
 def ask_question(question, legal_input):
     "ask the user a question and return the result"
@@ -59,7 +61,7 @@ def main():
 
         #show all quotes
         if response == 1:
-            show_all_quotes()
+            show_all_quotes(wks)
         #add quote
         elif response == 2:
             quote = raw_input("Quote: ")
@@ -74,21 +76,28 @@ def main():
         elif response == 4: 
         	print("What quote would you like to delete? ")
 
+        #search spreadsheet 
         elif response == 5:
-        	search = raw_input("Search for what quote?: ")
+        	search_Query = input("Search for what quote?: ")
+            #cell = worksheet.find(search_Query)
+            #print("Found at R%sC%s" % (cell.row, cell.col))
 
+        #update e-mail roster
         elif response == 6:
-        	email = raw_input("What e-mail would you liked to add?: ")
+        	email = input("What e-mail would you liked to add?: ")
+        	update_email(email_cell, email)
 
+        #send quote
         elif response == 7:
             print("Sending a random quote to all on list.")
 
+        #print quote
         elif response == 8:
             print("Show quote")
             val = wks.acell('A1').value
             print val
 
-
+        #exit
         elif response == 9:
             break
 
