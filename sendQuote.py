@@ -1,6 +1,6 @@
 ####Functions defined 
-##show all quotes
-##add quote
+##show all quotes +
+##add quote +
 ##update quote
 ##delete quote
 ##search quote
@@ -15,6 +15,14 @@ def show_all_quotes(wks):
     quotes = wks.get_all_values()
     for entry in quotes:
         print entry[0]
+
+def add_quote(wks, quote):
+	wks.append_row([quote])
+	show_all_quotes(wks)
+	print("Quote added <3")
+
+def update_quote(wks, update):
+	print("")
 
 def update_email(email_cell, email):
     print("")
@@ -65,7 +73,7 @@ def main():
         #add quote
         elif response == 2:
             quote = raw_input("Quote: ")
-            add_quote(quote)
+            add_quote(wks, quote)
 
         #update quote
         elif response == 3:
