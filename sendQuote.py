@@ -1,13 +1,14 @@
 ####Functions defined 
 ##show all quotes +
 ##add quote +
-##update quote
-##delete quote
+##update quote +
+##delete quote ?
 ##search quote
 ##ask question
 ##print menu 
 ##main
 
+import re 
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
@@ -18,14 +19,24 @@ def show_all_quotes(wks):
 
 def add_quote(wks, quote):
 	wks.append_row([quote])
-	show_all_quotes(wks)
-	print("Quote added <3")
+	print("Inserted the following quote: %s." % quote)
 
-def update_quote(wks, update):
-	print("")
+def update_quote(wks, update, location):
+	wks.update_acell(("A"+location), update)
+	print("Updated the cell with: %s" % update)
 
-def update_email(email_cell, email):
-    print("")
+def delete_quote(wks, location):
+	#wks.delete_row(location)
+	print("Feature not supported.")
+
+def search_quote(wks,query):
+    mail_re = re.compile(query, re.IGNORECASE)
+    cell_list = wks.findall(mail_re)
+    print("-------------Search Results---------------")
+    print("*******************<3*********************")
+    for cell in cell_list:
+		print cell
+    print("*******************<3*********************")
 
 def ask_question(question, legal_input):
     "ask the user a question and return the result"
@@ -33,7 +44,7 @@ def ask_question(question, legal_input):
         response = int(input(question))
         if response in legal_input:
             return response
-        print("We don't have that option, try one from within", legal_input, "\n")
+        print("We don't have that option, try one from within %s." % legal_input)
 
 
 def print_menu():
@@ -77,16 +88,19 @@ def main():
 
         #update quote
         elif response == 3:
-            print ("Write the code for this")
-            wks.update_acell('A1', "lol")
+            location =  raw_input("Insert quote number you'd like to update: ")
+            update = raw_input("Update to:")
+            update_quote(wks,update,location)
 
         #delete quote
         elif response == 4: 
-        	print("What quote would you like to delete? ")
+        	location = raw_input("Quote number to delete? ")
+        	delete_quote(wks, location)
 
         #search spreadsheet 
         elif response == 5:
-        	search_Query = input("Search for what quote?: ")
+        	query = raw_input("Search for what quote?: ")
+        	search_quote(wks,query)
             #cell = worksheet.find(search_Query)
             #print("Found at R%sC%s" % (cell.row, cell.col))
 
