@@ -3,9 +3,9 @@
 ##add quote +
 ##update quote +
 ##delete quote ?
-##search quote
-##ask question
-##print menu 
+##search quote +
+##ask question +
+##print menu +
 ##main
 
 import re 
@@ -44,7 +44,9 @@ def ask_question(question, legal_input):
         response = int(input(question))
         if response in legal_input:
             return response
-        print("We don't have that option, try one from within %s." % legal_input)
+            print("We don't have that option, try one from within %s." % legal_input)
+        else:
+            return response
 
 
 def print_menu():
@@ -124,9 +126,9 @@ def main():
             break
 
         else:
+            print("Enter another value")
             pass
 
-        input("\n\nThanks for using <3\n")
 
 
 if __name__ == "__main__":
